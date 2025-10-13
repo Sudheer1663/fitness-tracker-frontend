@@ -1,0 +1,40 @@
+.loseweight-container.light-mode {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.loseweight-container.dark-mode {
+  background-color: #1c1c1c;
+  color: #f5f5f5;
+}
+
+.exercise-card {
+  border-radius: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.exercise-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.card-title {
+  font-weight: 600;
+}
+
+.card-text {
+  font-size: 0.95rem;
+}
+
+.btn-outline-secondary {
+  border-radius: 50px;
+}
+
+.dark-mode .btn-outline-secondary {
+  border-color: #00aaff;
+  color: #00aaff;
+}
+
+.dark-mode .btn-outline-secondary:hover {
+  background-color: #00aaff22;
+}

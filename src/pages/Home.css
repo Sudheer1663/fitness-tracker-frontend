@@ -1,0 +1,249 @@
+.home-container {
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  text-align: center;
+  padding-bottom: 3rem;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  background: #0072ff;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+  z-index: 1000;
+}
+
+.theme-toggle:hover {
+  background: #0056b3;
+}
+
+.hero {
+  padding: 100px 20px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.light-mode .hero {
+  background: linear-gradient(135deg, #448080, #69806a);
+  color: #fff;
+}
+
+.dark-mode .hero {
+  background: linear-gradient(135deg, #55808a, #0b2229);
+  color: #fff;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 25px auto;
+}
+
+.hero button {
+  border: none;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.light-mode .hero button {
+  background-color: #ffffff;
+  color: #2e7d32;
+}
+
+.light-mode .hero button:hover {
+  background-color: #2e7d32;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.dark-mode .hero button {
+  background-color: #0072ff;
+  color: #fff;
+}
+
+.dark-mode .hero button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.features {
+  margin-top: 70px;
+  padding: 0 20px;
+}
+
+.features h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  transition: color 0.3s ease;
+}
+
+.light-mode .features h2 {
+  color: #333;
+}
+
+.dark-mode .features h2 {
+  color: #3199a7;
+}
+
+.feature-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  transition: all 0.3s ease;
+}
+
+.feature-card {
+  border-radius: 20px;
+  padding: 25px;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.feature-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.light-mode .feature-card {
+  background-color: #fff;
+  color: #222;
+  border: 1px solid #e0e0e0;
+}
+
+.light-mode .feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .feature-card {
+  background-color: #1f1f1f;
+  color: #eaeaea;
+  border: 1px solid #333;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.15);
+}
+
+.advanced-features {
+  padding: 3rem 2rem;
+}
+
+.advanced-features .feature-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  justify-items: center;
+  max-width: 1200px;
+  margin: 40px auto;
+}
+
+.next-level-features {
+  padding: 3rem 2rem;
+}
+
+.next-level-features .feature-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  justify-items: center;
+  max-width: 1200px;
+  margin: 40px auto;
+}
+
+.cta-section {
+  padding: 3rem 2rem;
+  border-radius: 15px;
+  margin-top: 2rem;
+  transition: all 0.3s ease;
+}
+
+.light-mode .cta-section {
+  background: linear-gradient(135deg, #62929c, #1b314d);
+  color: white;
+}
+
+.dark-mode .cta-section {
+  background: linear-gradient(135deg, #2f3f42, #022327);
+  color: white;
+}
+
+.cta-section button {
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+}
+
+.light-mode .cta-section button {
+  background-color: white;
+  color: #0072ff;
+}
+
+.light-mode .cta-section button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.dark-mode .cta-section button {
+  background-color: #0072ff;
+  color: white;
+}
+
+.dark-mode .cta-section button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 900px) {
+  .advanced-features .feature-list,
+  .next-level-features .feature-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .advanced-features .feature-list,
+  .next-level-features .feature-list {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+}

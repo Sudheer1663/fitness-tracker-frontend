@@ -1,0 +1,26 @@
+.community-container {
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+.dark-mode .card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+}
+
+textarea {
+  resize: none;
+}
+
+.reactions button {
+  transition: transform 0.2s ease;
+}
+
+.reactions button:hover {
+  transform: scale(1.1);
+}

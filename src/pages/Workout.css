@@ -1,0 +1,99 @@
+.workout-container {
+  max-width: 800px;
+  margin: 3rem auto;
+  text-align: center;
+  padding: 1rem;
+}
+
+.workout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.workout-form input {
+  padding: 0.7rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.workout-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.workout-card {
+  background: var(--card-bg, #f5f5f5);
+  color: var(--text-color, #222);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.workout-card h3 {
+  color: #4caf50;
+}
+
+.workout-card button {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.workout-card button:hover {
+  background: #c62828;
+}
+
+.reset-btn {
+  background: #9e9e9e;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.reset-btn:hover {
+  background: #757575;
+}
+
+
+.chart-section {
+  margin-top: 2rem;
+  background: var(--card-bg, #fafafa);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+body.dark-mode .workout-card,
+body.dark-mode .chart-section {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+body.dark-mode .workout-form input {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.workout-form button{
+  height: 42px;
+  background-color: #369137;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+
+
+
+
