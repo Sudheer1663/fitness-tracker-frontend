@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Getstarted.css"; 
+import axios from "axios";
+import "./Getstarted.css";
 
 function Getstarted() {
   const navigate = useNavigate();
@@ -17,19 +18,28 @@ function Getstarted() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("userProfile", JSON.stringify(formData));
-    alert("Profile Created Successfully!");
+    try {
+  
+      const res = await axios.post("http://localhost:8080/api/profiles/add", formData);
+      console.log("Profile created:", res.data);
 
-    if (formData.goal === "Lose Weight") {
-      navigate("/loseweight"); 
-    } else if (formData.goal === "Build Muscle") {
-      navigate("/build-muscle"); 
-    } else if (formData.goal === "Stay Fit") {
-      navigate("/stay-fit"); 
-    } else {
-      navigate("/dashboard"); 
+      alert("Profile Created Successfully!");
+
+      
+      if (formData.goal === "Lose Weight") {
+        navigate("/loseweight");
+      } else if (formData.goal === "Build Muscle") {
+        navigate("/build-muscle");
+      } else if (formData.goal === "Stay Fit") {
+        navigate("/stay-fit");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      console.error("Failed to create profile!", err);
+      alert("Failed to create profile!");
     }
   };
 
@@ -38,22 +48,10 @@ function Getstarted() {
       <h2>Get Started with Your Fitness Journey</h2>
       <form onSubmit={handleSubmit} className="get-started-form">
         <label>Name</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
+        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
 
         <label>Age</label>
-        <input
-          type="number"
-          name="age"
-          value={formData.age}
-          onChange={handleChange}
-          required
-        />
+        <input type="number" name="age" value={formData.age} onChange={handleChange} required />
 
         <label>Gender</label>
         <select name="gender" value={formData.gender} onChange={handleChange} required>
@@ -64,22 +62,10 @@ function Getstarted() {
         </select>
 
         <label>Height (cm)</label>
-        <input
-          type="number"
-          name="height"
-          value={formData.height}
-          onChange={handleChange}
-          required
-        />
+        <input type="number" name="height" value={formData.height} onChange={handleChange} required />
 
         <label>Weight (kg)</label>
-        <input
-          type="number"
-          name="weight"
-          value={formData.weight}
-          onChange={handleChange}
-          required
-        />
+        <input type="number" name="weight" value={formData.weight} onChange={handleChange} required />
 
         <label>Fitness Goal</label>
         <select name="goal" value={formData.goal} onChange={handleChange} required>

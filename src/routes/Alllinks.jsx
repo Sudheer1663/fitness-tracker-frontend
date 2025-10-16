@@ -14,6 +14,9 @@ import Stayfit from "../pages/Stayfit";
 import Profile from "../components/Profile";
 import Community from "../pages/Community";
 import Challenges from "../pages/Challenges";
+import Store from "../pages/Store";
+import Cart from "../pages/Cart";
+import Roadmap from "../pages/Roadmap";
 
 const Alllinks = () => {
   return (
@@ -24,21 +27,24 @@ const Alllinks = () => {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/progress" element={<Progress />} />
-        <Route path="/getstarted" element={<Getstarted/>}/>
-        <Route path="/workout" element={<Workout/>}/>
-        <Route path="/community" element={<Community/>}/>
-        <Route path="/challenges" element={<Challenges/>}/>
-        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/getstarted" element={<Getstarted />} />
+        <Route path="/workout" element={<Workout />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/challenges" element={<Challenges />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/store" element={<Store />} />
 
       </Route>
-     
-        <Route path="/loseweight" element={<Loseweight/>}/>
-        <Route path="/build-muscle" element={<Buildmuscle/>}/> 
-        <Route path="/stay-fit" element={<Stayfit/>}/> 
-     
-      <Route path="/login" element={<Login/>}/>
-      <Route path="/signup" element={<Signup/>}/>
-      <Route path="/profile" element={<Profile/>}/>
+
+      <Route path="/loseweight" element={<Loseweight />} />
+      <Route path="/build-muscle" element={<Buildmuscle />} />
+      <Route path="/stay-fit" element={<Stayfit />} />
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/roadmap" element={<Roadmap />} />
     </Routes>
 
 

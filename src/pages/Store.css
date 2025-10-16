@@ -1,0 +1,37 @@
+.store-container {
+  min-height: 100vh;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.product-card {
+  border-radius: 15px;
+  transition: transform 0.2s ease, box-shadow 0.3s;
+}
+
+.product-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.product-img {
+  height: 220px;
+  object-fit: cover;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+.dark-mode .card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+}
+
+.btn-group .btn {
+  border-radius: 25px;
+  padding: 6px 16px;
+}

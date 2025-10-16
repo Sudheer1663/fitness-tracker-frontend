@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Community.css";
+import { AuthContext } from "../contexts/Authcontext";
 
 function Community() {
   const [darkMode, setDarkMode] = useState(false);
@@ -11,6 +13,14 @@ function Community() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("latest");
   const [notification, setNotification] = useState("");
+  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login"); 
+    }
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");

@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/Authcontext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Challenges.css";
 
@@ -7,7 +9,7 @@ function Challenges() {
   const [joinedChallenges, setJoinedChallenges] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
 
-  // Expanded challenges list
+  
   const challenges = [
     { id: 1, title: "🏃‍♀️ 10,000 Steps a Day", description: "Walk 10,000 steps daily for 30 days to boost stamina and heart health.", duration: "30 Days" },
     { id: 2, title: "💧 Hydration Challenge", description: "Drink at least 3 liters of water daily to stay hydrated and energized.", duration: "15 Days" },
@@ -22,6 +24,15 @@ function Challenges() {
     { id: 11, title: "🏋️‍♀️ Dumbbell Strength", description: "Use dumbbells to perform full-body strength workouts 3x per week for 4 weeks.", duration: "28 Days" },
     { id: 12, title: "🥗 Healthy Meal Prep", description: "Prepare and eat balanced meals daily for 14 days to improve nutrition.", duration: "14 Days" },
   ];
+
+  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login"); 
+    }
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -74,9 +85,7 @@ function Challenges() {
     <div className={`container py-5 challenges-page ${darkMode ? "dark" : "light"}`}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold">🏆 Fitness Challenges</h2>
-        {/* <button className="btn btn-outline-secondary rounded-pill" onClick={() => setDarkMode(!darkMode)}>
-          {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-        </button> */}
+       
       </div>
 
       <p className="lead text-muted mb-5">

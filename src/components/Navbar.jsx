@@ -57,7 +57,7 @@ function Navbar() {
       <div className="nav-right">
         {isLoggedIn ? (
           <div className="profile-menu">l
-            <span className="user-name"><Link to="/profile" ><CgProfile size={35}/> {userName}</Link></span>
+            <span className="user-name"><Link to="/profile" ><CgProfile size={35}/>{userName}</Link></span>
             <div className="dropdown">
               <button onClick={() => navigate("/profile")}>View Profile</button>
               <button onClick={handleLogout}>Logout</button>

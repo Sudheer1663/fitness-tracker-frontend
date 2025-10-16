@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useContext} from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/Authcontext";
 import {
   LineChart,
   Line,
@@ -11,6 +13,15 @@ import {
 import "./Workout.css";
 
 function Workout() {
+
+  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login"); 
+    }
+  }, [isLoggedIn, navigate]);
   const [workouts, setWorkouts] = useState([]);
   const [form, setForm] = useState({
     type: "",

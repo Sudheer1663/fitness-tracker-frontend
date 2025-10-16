@@ -56,12 +56,7 @@ function Loseweight() {
     <div className={`container my-5 loseweight-container ${darkMode ? "dark-mode" : "light-mode"}`}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Lose Weight Exercises</h2>
-        <button
-          className="btn btn-outline-secondary"
-          onClick={() => setDarkMode(!darkMode)}
-        >
-          {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-        </button>
+       
       </div>
 
       

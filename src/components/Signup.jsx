@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/Authcontext";
 import "./Signup.css";
+import bgImage from "../assets/images/f3.jpg";
 
 function Signup() {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext); 
   const [darkMode, setDarkMode] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
-  
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") setDarkMode(true);
   }, []);
 
-  
   useEffect(() => {
     document.body.className = darkMode ? "dark-mode" : "";
   }, [darkMode]);
-
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -30,7 +31,6 @@ function Signup() {
       return;
     }
 
-    
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(phone)) {
       alert("Please enter a valid 10-digit phone number!");
@@ -46,11 +46,14 @@ function Signup() {
         body: JSON.stringify(userData),
       });
 
-      const message = await response.text();
-      alert(message);
+      const savedUser = await response.json(); 
 
-      if (message.toLowerCase().includes("success")) {
-        navigate("/login");
+      if (savedUser?.name) {
+        login(savedUser); 
+        alert("Signup successful!");
+        navigate("/profile"); 
+      } else {
+        alert(savedUser?.message || "Signup failed");
       }
     } catch (error) {
       console.error("Signup failed:", error);
@@ -59,10 +62,18 @@ function Signup() {
   };
 
   return (
-    <div className={`signup-container ${darkMode ? "dark-mode" : "light-mode"}`}>
+    <div
+      className={`signup-container ${darkMode ? "dark-mode" : "light-mode"}`}
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+      }}
+    >
       <div className="signup-card">
         <h2>Create Your Fitness Account</h2>
-
         <form onSubmit={handleSignup}>
           <input
             type="text"
@@ -71,7 +82,6 @@ function Signup() {
             onChange={(e) => setName(e.target.value)}
             required
           />
-
           <input
             type="email"
             placeholder="Email Address"
@@ -79,7 +89,6 @@ function Signup() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-
           <input
             type="tel"
             placeholder="Phone Number"
@@ -87,7 +96,6 @@ function Signup() {
             onChange={(e) => setPhone(e.target.value)}
             required
           />
-
           <input
             type="password"
             placeholder="Create Password"
@@ -95,10 +103,8 @@ function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
           <button type="submit">Sign Up</button>
         </form>
-
         <p>
           Already have an account?{" "}
           <span

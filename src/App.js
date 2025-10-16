@@ -3,12 +3,15 @@ import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import "./App.css";
 import Alllinks from "./routes/Alllinks";
+import { AuthProvider } from "./contexts/Authcontext";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Alllinks />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Alllinks />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

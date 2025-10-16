@@ -106,12 +106,7 @@ function Stayfit() {
             <option value="CostDesc">Cost ↓</option>
           </select>
 
-          <button
-            className="btn btn-outline-primary"
-            onClick={() => setDarkMode(!darkMode)}
-          >
-            {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-          </button>
+        
 
           <button className="btn btn-warning" onClick={resetFilters}>
             Reset Filters

@@ -1,76 +1,52 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Profile.css";
-import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/Authcontext";
 
 function Profile() {
-  const [userProfile, setUserProfile] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
+  const { user, updateProfile, logout } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
-
-  useEffect(() => {
-    const savedProfile = JSON.parse(localStorage.getItem("userProfile"));
-    if (savedProfile) {
-      setUserProfile(savedProfile);
-      setFormData(savedProfile);
-    }
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") setDarkMode(true);
-  }, []);
-
   
   useEffect(() => {
-    document.body.className = darkMode ? "dark-mode" : "";
-    localStorage.setItem("theme", darkMode ? "dark" : "light");
-  }, [darkMode]);
+    if (user) setFormData(user);
+  }, [user]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSave = () => {
-    localStorage.setItem("userProfile", JSON.stringify(formData));
-    setUserProfile(formData);
+    updateProfile(formData); 
     setIsEditing(false);
     alert("✅ Profile updated successfully!");
   };
 
-  
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userProfile");
-    alert("👋 You have been logged out!");
+    logout();
+    alert("👋 Logged out successfully!");
     navigate("/login");
   };
 
-  if (!userProfile) {
+  if (!user) {
     return (
       <div className="text-center mt-5 text-muted">
-        <h5>No profile found. Please complete Get Started first.</h5>
+        <h5>No profile found. Please log in first.</h5>
       </div>
     );
   }
 
   return (
-    <div className={`container mt-5 profile-container ${darkMode ? "dark" : "light"}`}>
+    <div className="container mt-5 profile-container">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Your Fitness Profile</h2>
-        <div className="d-flex gap-2">
-          {/* <button
-            className="btn btn-outline-secondary theme-toggle"
-            onClick={() => setDarkMode(!darkMode)}
-          >
-            {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-          </button> */}
-
-
-          <button className="btn btn-outline-danger" onClick={handleLogout}>
-            🚪 Logout
-          </button>
-        </div>
+        <h2>Welcome, {user.name || "User"} 👋</h2>
+        <button className="btn btn-outline-danger" onClick={handleLogout}>
+          🚪 Logout
+        </button>
       </div>
 
       <div className="card shadow profile-card p-4">
@@ -82,74 +58,31 @@ function Profile() {
                 type="text"
                 name="name"
                 className="form-control"
-                value={formData.name}
+                value={formData.name || ""}
                 onChange={handleChange}
               />
             </div>
 
-            <div className="row">
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Age</label>
-                <input
-                  type="number"
-                  name="age"
-                  className="form-control"
-                  value={formData.age}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Gender</label>
-                <select
-                  name="gender"
-                  className="form-select"
-                  value={formData.gender}
-                  onChange={handleChange}
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Height (cm)</label>
-                <input
-                  type="number"
-                  name="height"
-                  className="form-control"
-                  value={formData.height}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Weight (kg)</label>
-                <input
-                  type="number"
-                  name="weight"
-                  className="form-control"
-                  value={formData.weight}
-                  onChange={handleChange}
-                />
-              </div>
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                value={formData.email || ""}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Goal</label>
-              <select
-                name="goal"
-                className="form-select"
-                value={formData.goal}
+              <label className="form-label">Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                className="form-control"
+                value={formData.phone || ""}
                 onChange={handleChange}
-              >
-                <option value="Lose Weight">Lose Weight</option>
-                <option value="Build Muscle">Build Muscle</option>
-                <option value="Stay Fit">Stay Fit</option>
-              </select>
+              />
             </div>
 
             <div className="d-flex justify-content-between mt-3">
@@ -158,7 +91,10 @@ function Profile() {
               </button>
               <button
                 className="btn btn-danger"
-                onClick={() => setIsEditing(false)}
+                onClick={() => {
+                  setIsEditing(false);
+                  setFormData(user); 
+                }}
               >
                 ❌ Cancel
               </button>
@@ -166,12 +102,15 @@ function Profile() {
           </>
         ) : (
           <>
-            <p><strong>Name:</strong> {userProfile.name}</p>
-            <p><strong>Age:</strong> {userProfile.age}</p>
-            <p><strong>Gender:</strong> {userProfile.gender}</p>
-            <p><strong>Height:</strong> {userProfile.height} cm</p>
-            <p><strong>Weight:</strong> {userProfile.weight} kg</p>
-            <p><strong>Goal:</strong> {userProfile.goal}</p>
+            <p>
+              <strong>Name:</strong> {user.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email || "Not provided"}
+            </p>
+            <p>
+              <strong>Phone:</strong> {user.phone || "Not provided"}
+            </p>
 
             <div className="text-center mt-4">
               <button
@@ -189,3 +128,7 @@ function Profile() {
 }
 
 export default Profile;
+
+
+
+

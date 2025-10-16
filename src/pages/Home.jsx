@@ -11,9 +11,7 @@ function Home() {
     <div className={`home-container ${darkMode ? "dark-mode" : "light-mode"}`}>
 
     
-      {/* <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
-        {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-      </button> */}
+     
 
       
       <section className="hero">
