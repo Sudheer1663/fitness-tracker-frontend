@@ -38,3 +38,13 @@
 .dark-mode .btn-outline-secondary:hover {
   background-color: #00aaff22;
 }
+.loseweight-container .btn-outline-secondary {
+  font-weight: 500;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.loseweight-container .btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: rgb(255, 255, 255);
+}

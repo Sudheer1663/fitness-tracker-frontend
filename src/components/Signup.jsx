@@ -51,7 +51,7 @@ function Signup() {
       if (savedUser?.name) {
         login(savedUser); 
         alert("Signup successful!");
-        navigate("/profile"); 
+        navigate("/login"); 
       } else {
         alert(savedUser?.message || "Signup failed");
       }
