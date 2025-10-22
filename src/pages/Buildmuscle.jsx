@@ -145,29 +145,9 @@
 // export default Buildmuscle;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getFitnessGoalsByGoal } from "../services/Api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Buildmuscle.css";
 
@@ -178,8 +158,12 @@ function Buildmuscle() {
   const [typeFilter, setTypeFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("None");
+  const [exercises, setExercises] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-  // Load dark mode preference
+  // Load theme from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") setDarkMode(true);
@@ -189,34 +173,24 @@ function Buildmuscle() {
     document.body.className = darkMode ? "dark-mode" : "";
   }, [darkMode]);
 
-  // Exercise data
-  const exercises = [
-    { id: 1, name: "Bench Press", duration: 15, cost: 8, level: "Intermediate", type: "Strength" },
-    { id: 2, name: "Bicep Curls", duration: 10, cost: 5, level: "Beginner", type: "Strength" },
-    { id: 3, name: "Deadlift", duration: 20, cost: 10, level: "Advanced", type: "Strength" },
-    { id: 4, name: "Squats", duration: 15, cost: 7, level: "Beginner", type: "Strength" },
-    { id: 5, name: "Pull Ups", duration: 12, cost: 6, level: "Advanced", type: "Bodyweight" },
-    { id: 6, name: "Shoulder Press", duration: 10, cost: 5, level: "Intermediate", type: "Strength" },
-    { id: 7, name: "Lunges", duration: 12, cost: 6, level: "Beginner", type: "Cardio" },
-    { id: 8, name: "Tricep Dips", duration: 10, cost: 5, level: "Intermediate", type: "Bodyweight" },
-    { id: 9, name: "Leg Press", duration: 15, cost: 8, level: "Advanced", type: "Strength" },
-    { id: 10, name: "Chest Fly", duration: 12, cost: 6, level: "Intermediate", type: "Strength" },
-    { id: 11, name: "Lat Pulldown", duration: 12, cost: 6, level: "Intermediate", type: "Strength" },
-    { id: 12, name: "Plank", duration: 5, cost: 3, level: "Beginner", type: "Core" },
-  ];
+  // Fetch exercises
+  useEffect(() => {
+    getFitnessGoalsByGoal("BUILD_MUSCLES")
+      .then((data) => setExercises(data))
+      .catch((err) => console.error("Error fetching BUILD_MUSCLES:", err));
+  }, []);
 
-  // Filter and sort logic
-  let filteredExercises = exercises.filter(
+  let filtered = exercises.filter(
     (ex) =>
       (levelFilter === "All" || ex.level === levelFilter) &&
       (typeFilter === "All" || ex.type === typeFilter) &&
-      ex.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ex.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (sortOption === "DurationAsc") filteredExercises.sort((a, b) => a.duration - b.duration);
-  else if (sortOption === "DurationDesc") filteredExercises.sort((a, b) => b.duration - a.duration);
-  else if (sortOption === "CostAsc") filteredExercises.sort((a, b) => a.cost - b.cost);
-  else if (sortOption === "CostDesc") filteredExercises.sort((a, b) => b.cost - a.cost);
+  if (sortOption === "DurationAsc") filtered.sort((a, b) => a.duration - b.duration);
+  else if (sortOption === "DurationDesc") filtered.sort((a, b) => b.duration - a.duration);
+  else if (sortOption === "CostAsc") filtered.sort((a, b) => a.cost - b.cost);
+  else if (sortOption === "CostDesc") filtered.sort((a, b) => b.cost - a.cost);
 
   const resetFilters = () => {
     setLevelFilter("All");
@@ -225,68 +199,41 @@ function Buildmuscle() {
     setSortOption("None");
   };
 
+  const addToCart = (exercise) => {
+    if (!cart.find((item) => item.id === exercise.id)) {
+      setCart([...cart, exercise]);
+      alert(`${exercise.title} added to cart!`);
+    } else {
+      alert(`${exercise.title} is already in the cart!`);
+    }
+  };
+
   return (
     <div className={darkMode ? "bg-dark text-light" : "bg-light text-dark"} style={{ minHeight: "100vh" }}>
       {/* Navbar */}
-      <nav
-        className={`navbar navbar-expand-lg fixed-top ${
-          darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"
-        } shadow-sm`}
-      >
+      <nav className={`navbar navbar-expand-lg fixed-top ${darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"} shadow-sm`}>
         <div className="container-fluid">
-          <button className="btn btn-outline-secondary me-3" onClick={() => navigate(-1)}>
-            ⬅ Back
-          </button>
-
-          <a className="navbar-brand fw-bold me-4" href="#">
-            💪 Build Muscle
-          </a>
-
+          <button className="btn btn-outline-secondary me-3" onClick={() => navigate(-1)}>⬅ Back</button>
+          <span className="navbar-brand fw-bold">💪 Build Muscle</span>
           <div className="d-flex flex-wrap align-items-center gap-2 ms-auto">
-            {/* Level Filter */}
-            <select
-              className="form-select form-select-sm"
-              style={{ width: "130px" }}
-              value={levelFilter}
-              onChange={(e) => setLevelFilter(e.target.value)}
-            >
+            <select className="form-select form-select-sm" style={{ width: "130px" }} value={levelFilter} onChange={(e) => setLevelFilter(e.target.value)}>
               <option value="All">All Levels</option>
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
+              <option value="BEGINNER">Beginner</option>
+              <option value="INTERMEDIATE">Intermediate</option>
+              <option value="ADVANCED">Advanced</option>
             </select>
 
-            {/* Type Filter */}
-            <select
-              className="form-select form-select-sm"
-              style={{ width: "130px" }}
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-            >
+            <select className="form-select form-select-sm" style={{ width: "130px" }} value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
               <option value="All">All Types</option>
-              <option value="Strength">Strength</option>
-              <option value="Bodyweight">Bodyweight</option>
-              <option value="Cardio">Cardio</option>
-              <option value="Core">Core</option>
+              <option value="STRENGTH">Strength</option>
+              <option value="BODYWEIGHT">Bodyweight</option>
+              <option value="CARDIO">Cardio</option>
+              <option value="CORE">Core</option>
             </select>
 
-            {/* Search */}
-            <input
-              type="text"
-              className="form-control form-control-sm"
-              placeholder="Search..."
-              style={{ width: "160px" }}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <input type="text" className="form-control form-control-sm" style={{ width: "160px" }} placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
 
-            {/* Sort */}
-            <select
-              className="form-select form-select-sm"
-              style={{ width: "130px" }}
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
-            >
+            <select className="form-select form-select-sm" style={{ width: "130px" }} value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="None">Sort By</option>
               <option value="DurationAsc">Duration ↑</option>
               <option value="DurationDesc">Duration ↓</option>
@@ -294,48 +241,46 @@ function Buildmuscle() {
               <option value="CostDesc">Cost ↓</option>
             </select>
 
-            {/* Reset */}
-            <button className="btn btn-warning btn-sm" onClick={resetFilters}>
-              Reset
-            </button>
+            <button className="btn btn-warning btn-sm" onClick={resetFilters}>Reset</button>
 
-            {/* Dark Mode Toggle */}
-            <button
-              className={`btn btn-sm btn-${darkMode ? "light" : "dark"}`}
-              onClick={() => {
-                setDarkMode(!darkMode);
-                localStorage.setItem("theme", darkMode ? "light" : "dark");
-              }}
-            >
-              {darkMode ? "☀ Light" : "🌙 Dark"}
+            <button className="btn btn-primary btn-sm position-relative" onClick={() => alert(`Cart Items:\n${cart.map(c => c.title).join("\n") || "Empty"}`)}>
+              🛒 Cart
+              {cart.length > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{cart.length}</span>}
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Main Section */}
+      {/* Exercises Grid */}
       <div className="container" style={{ paddingTop: "100px" }}>
         <div className="row">
-          {filteredExercises.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="col-12 text-center py-5">
               <h4>😔 No exercises found</h4>
-              <p>Try adjusting filters or search term.</p>
             </div>
           ) : (
-            filteredExercises.map((ex) => (
+            filtered.map((ex) => (
               <div key={ex.id} className="col-md-4 mb-4">
-                <div className={`card h-100 shadow-sm ${darkMode ? "bg-secondary text-light" : ""}`}>
-                  <div className="card-body d-flex flex-column">
-                    <h5 className="card-title">{ex.name}</h5>
-                    <p className="card-text mb-1">Duration: {ex.duration} min</p>
-                    <p className="card-text mb-1">Cost: ${ex.cost}</p>
-                    <p className="card-text mb-1">Level: {ex.level}</p>
-                    <p className="card-text mb-3">Type: {ex.type}</p>
+                <div
+                  className="exercise-card shadow-sm"
+                  style={{
+                    backgroundImage: `url(data:image/jpeg;base64,${ex.imageData})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                  onClick={() => { setSelectedImage(`data:image/jpeg;base64,${ex.imageData}`); setShowModal(true); }}
+                >
+                  <div className="overlay p-2">
+                    <h4 className="fw-bold mb-2">{ex.title}</h4>
+                    <p className="mb-1"><strong>Duration:</strong> {ex.duration} min</p>
+                    <p className="mb-1"><strong>Cost:</strong> ${ex.cost}</p>
+                    <p className="mb-1"><strong>Level:</strong> {ex.level}</p>
+                    <p className="mb-1"><strong>Type:</strong> {ex.type}</p>
                     <button
-                      className="btn btn-success mt-auto"
-                      onClick={() => alert(`${ex.name} added to your plan!`)}
+                      className="btn btn-success btn-sm mt-2"
+                      onClick={(e) => { e.stopPropagation(); addToCart(ex); }}
                     >
-                      Add to Plan
+                      Add to Cart
                     </button>
                   </div>
                 </div>
@@ -344,9 +289,22 @@ function Buildmuscle() {
           )}
         </div>
       </div>
+
+      {/* Image Modal */}
+      {showModal && (
+        <div className="modal fade show" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.8)" }} onClick={() => setShowModal(false)}>
+          <div className="modal-dialog modal-dialog-centered" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content bg-transparent border-0">
+              <div className="modal-body text-center p-0">
+                <img src={selectedImage} alt="Exercise Preview" style={{ width: "100%", maxWidth: "500px", borderRadius: "10px", objectFit: "contain" }} />
+              </div>
+              <button className="btn btn-danger position-absolute top-0 end-0 m-3" onClick={() => setShowModal(false)}>✖</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default Buildmuscle;
-

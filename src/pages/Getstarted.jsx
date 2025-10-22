@@ -196,6 +196,25 @@ function Getstarted() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  useEffect(() => {
+  const user = JSON.parse(localStorage.getItem("userProfile"));
+
+  // If user is NOT logged in, redirect to signup/login
+  if (!user) {
+    navigate("/signup"); // or "/login" depending on your route
+    return;
+  }
+
+  // If user already completed getstarted, go to goal page
+  const goal = localStorage.getItem("userGoal");
+  if (user.getstarted && goal) {
+    if (goal === "Lose Weight") navigate("/loseweight");
+    else if (goal === "Build Muscle") navigate("/build-muscle");
+    else if (goal === "Stay Fit") navigate("/stay-fit");
+  }
+}, [navigate]);
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
