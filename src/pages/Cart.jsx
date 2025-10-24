@@ -91,62 +91,162 @@
 
 
 
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCartItems, removeFromCart } from "../services/CartApi";
+import { getCartItems, removeFromCart, clearCartApi, getCartTotal } from "../services/CartApi";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function Cart() {
   const navigate = useNavigate();
-  const [cart, setCart] = useState([]);
-  const userId = 1; // Replace with actual logged-in user ID
+  const userId = 14; // replace with logged-in user ID
+  const [cartItems, setCartItems] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    loadCart();
+    fetchCart();
   }, []);
 
-  const loadCart = async () => {
+  const fetchCart = async () => {
     try {
+      setLoading(true);
       const items = await getCartItems(userId);
-      setCart(items);
-    } catch (err) {
-      console.error("Error loading cart:", err);
+      setCartItems(items);
+      const sum = await getCartTotal(userId);
+      setTotal(sum);
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+      alert("Failed to load your plan. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleRemove = async (itemId) => {
+  const handleRemove = async (id) => {
     try {
-      await removeFromCart(itemId);
-      loadCart();
-    } catch (err) {
-      console.error("Error removing item:", err);
+      await removeFromCart(id);
+      await fetchCart(); // Refresh cart after removal
+    } catch (error) {
+      console.error("Error removing item:", error);
+      alert("Failed to remove item. Please try again.");
     }
   };
+
+  const handleClearCart = async () => {
+    if (window.confirm("Are you sure you want to clear your entire plan?")) {
+      try {
+        await clearCartApi(userId);
+        await fetchCart(); // Refresh cart after clearing
+      } catch (error) {
+        console.error("Error clearing cart:", error);
+        alert("Failed to clear plan. Please try again.");
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="container" style={{ paddingTop: "80px" }}>
+        <div className="d-flex justify-content-center align-items-center" style={{ height: "50vh" }}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container py-4">
-      <h2>🛒 Your Cart</h2>
-      {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <div className="list-group">
-          {cart.map((item) => (
-            <div key={item.id} className="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <h5>{item.title}</h5>
-                <p>Type: {item.type} | Level: {item.level} | Duration: {item.duration} min | Cost: ${item.cost}</p>
-              </div>
-              <button className="btn btn-danger btn-sm" onClick={() => handleRemove(item.id)}>Remove</button>
-            </div>
-          ))}
+    <div className="container" style={{ paddingTop: "80px" }}>
+      <button className="btn btn-outline-secondary mb-3" onClick={() => navigate(-1)}>
+        ⬅ Back
+      </button>
+      <h2>🛒 My Plan</h2>
+
+      {cartItems.length === 0 ? (
+        <div className="text-center py-5">
+          <p className="fs-5">Your plan is empty 😔</p>
+          <button className="btn btn-primary" onClick={() => navigate("/loseweight")}>
+            Browse Exercises
+          </button>
         </div>
+      ) : (
+        <>
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Exercise</th>
+                  <th>Duration</th>
+                  <th>Cost</th>
+                  <th>Level</th>
+                  <th>Type</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartItems.map((item) => (
+                  <tr key={item.id}>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        {item.imageData && (
+                          <img 
+                            src={`data:image/jpeg;base64,${item.imageData}`}
+                            alt={item.title}
+                            style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "5px", marginRight: "10px" }}
+                          />
+                        )}
+                        <span>{item.title}</span>
+                      </div>
+                    </td>
+                    <td>{item.duration} min</td>
+                    <td>${item.cost}</td>
+                    <td>
+                      <span className={`badge ${
+                        item.level === 'BEGINNER' ? 'bg-success' : 
+                        item.level === 'INTERMEDIATE' ? 'bg-warning' : 'bg-danger'
+                      }`}>
+                        {item.level}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`badge ${
+                        item.type === 'CARDIO' ? 'bg-primary' : 
+                        item.type === 'STRENGTH' ? 'bg-secondary' : 'bg-info'
+                      }`}>
+                        {item.type}
+                      </span>
+                    </td>
+                    <td>
+                      <button 
+                        className="btn btn-danger btn-sm" 
+                        onClick={() => handleRemove(item.id)}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="d-flex justify-content-between align-items-center mt-4 p-3 bg-light rounded">
+            <h4 className="mb-0">Total Cost: ${total}</h4>
+            <div>
+              <button className="btn btn-warning me-2" onClick={handleClearCart}>
+                Clear Plan
+              </button>
+              <button className="btn btn-success" onClick={() => alert("Checkout functionality would go here!")}>
+                Checkout
+              </button>
+            </div>
+          </div>
+        </>
       )}
-      <button className="btn btn-secondary mt-3" onClick={() => navigate(-1)}>⬅ Back</button>
     </div>
   );
 }
 
 export default Cart;
+
