@@ -44,3 +44,65 @@
 .profile-container.dark input::placeholder {
   color: #bbb;
 }
+
+
+
+
+
+
+
+
+
+.profile-container {
+  max-width: 900px;
+}
+
+.profile-card {
+  border-radius: 15px;
+  border: none;
+}
+
+.user-info-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-left: 4px solid #007bff;
+}
+
+.profile-card .form-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.profile-card .form-control {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.profile-card .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.profile-card p {
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.profile-card strong {
+  color: #343a40;
+  min-width: 120px;
+  display: inline-block;
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}

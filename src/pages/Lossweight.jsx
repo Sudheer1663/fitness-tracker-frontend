@@ -405,6 +405,8 @@
 
 
 
+
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getFitnessGoalsByGoal } from "../services/Api";
@@ -513,6 +515,11 @@ function Loseweight() {
     }
   };
 
+  // Change Goal function
+  const handleChangeGoal = () => {
+    navigate("/getstarted"); // Navigate to goals selection page
+  };
+
   // Filter & Sort
   let filtered = exercises.filter(
     ex =>
@@ -553,6 +560,15 @@ function Loseweight() {
           </button>
           <span className="navbar-brand fw-bold">🏋️‍♀️ Lose Weight</span>
           <div className="d-flex flex-wrap align-items-center gap-2 ms-auto">
+            {/* Change Goal Button */}
+            <button 
+              className="btn btn-outline-info btn-sm" 
+              onClick={handleChangeGoal}
+              title="Change Fitness Goal"
+            >
+              🎯 Change Goal
+            </button>
+
             {/* Filters */}
             <select 
               className="form-select form-select-sm" 
@@ -622,10 +638,34 @@ function Loseweight() {
 
       {/* Exercises Grid */}
       <div className="container" style={{ paddingTop: "100px" }}>
+        {/* Goal Info Banner */}
+        <div className="row mb-4">
+          <div className="col-12">
+            <div className={`alert ${darkMode ? 'alert-dark' : 'alert-info'} d-flex justify-content-between align-items-center`}>
+              <div>
+                <h5 className="alert-heading mb-1">🎯 Current Goal: Lose Weight</h5>
+                <p className="mb-0">Building your weight loss workout plan. Found {filtered.length} exercises.</p>
+              </div>
+              <button 
+                className="btn btn-outline-primary btn-sm" 
+                onClick={handleChangeGoal}
+              >
+                Change Goal
+              </button>
+            </div>
+          </div>
+        </div>
+
         {filtered.length === 0 && !loading ? (
           <div className="col-12 text-center py-5">
             <h4>😔 No exercises found</h4>
             <p>Try adjusting your filters or search term</p>
+            <button 
+              className="btn btn-primary mt-2"
+              onClick={handleChangeGoal}
+            >
+              🎯 Try Different Goal
+            </button>
           </div>
         ) : (
           <div className="row">

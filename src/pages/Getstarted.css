@@ -29,7 +29,7 @@
   padding: 2rem;
   border-radius: 15px;
   backdrop-filter: blur(8px);
-  width: 350px;
+  width: 400px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
@@ -42,11 +42,65 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
+/* Info Banner Styles */
+.info-banner {
+  background: rgba(33, 150, 243, 0.2);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border-left: 4px solid #03a9f4;
+  text-align: left;
+  backdrop-filter: blur(5px);
+}
+
+.info-banner p {
+  margin: 0;
+  font-size: 14px;
+  color: #e3f2fd;
+  line-height: 1.4;
+}
+
+/* Loading Spinner Styles */
+.loading-spinner {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #03a9f4;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+  color: #fff;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Form Group Styles */
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
 .get-started-form label {
   display: block;
   text-align: left;
   font-size: 14px;
-  margin-top: 1rem;
+  margin-bottom: 0.5rem;
   color: #f1f1f1;
   font-weight: 500;
 }
@@ -54,24 +108,74 @@
 .get-started-form input,
 .get-started-form select {
   width: 100%;
-  margin-top: 0.4rem;
   padding: 0.8rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   font-size: 15px;
   background: rgba(255, 255, 255, 0.9);
   color: #222;
   outline: none;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .get-started-form input:focus,
 .get-started-form select:focus {
   border-color: #03a9f4;
   box-shadow: 0 0 6px rgba(3, 169, 244, 0.4);
+  background: rgba(255, 255, 255, 0.95);
 }
 
-.get-started-form button {
+/* Form Buttons Container */
+.form-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 2rem;
+}
+
+/* Submit Button */
+.btn-submit {
+  flex: 1;
+  background: #4caf50;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+  background: #388e3c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* Cancel Button */
+.btn-cancel {
+  flex: 1;
+  background: rgba(149, 165, 166, 0.8);
+  border: none;
+  padding: 0.8rem;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.btn-cancel:hover {
+  background: rgba(127, 140, 141, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(149, 165, 166, 0.3);
+}
+
+/* Single Button (when no cancel button) */
+.get-started-form button[type="submit"]:not(.btn-submit) {
   width: 100%;
   margin-top: 1.5rem;
   padding: 0.8rem;
@@ -85,14 +189,56 @@
   transition: all 0.3s ease;
 }
 
-.get-started-form button:hover {
+.get-started-form button[type="submit"]:not(.btn-submit):hover {
   background: #388e3c;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
+/* Responsive Design */
 @media (max-width: 600px) {
   .get-started-form {
     width: 90%;
     padding: 1.5rem;
   }
+  
+  .form-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .info-banner {
+    padding: 12px;
+  }
+  
+  .info-banner p {
+    font-size: 13px;
+  }
+}
+
+/* Animation for form appearance */
+.get-started-form {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input validation styles */
+.get-started-form input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.get-started-form input:valid:not(:focus):not(:placeholder-shown) {
+  border-color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
 }

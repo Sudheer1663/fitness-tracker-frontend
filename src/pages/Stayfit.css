@@ -16,3 +16,66 @@ body.dark-mode {
   50% { transform: scale(1.05); opacity: 0.7; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+
+
+
+
+
+
+
+
+
+.exercise-card {
+  height: 300px;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.exercise-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.exercise-card:hover .overlay {
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode .exercise-card {
+  border: 1px solid #333;
+}
+
+@media (max-width: 768px) {
+  .exercise-card {
+    height: 250px;
+  }
+  
+  .navbar .d-flex {
+    flex-wrap: wrap;
+    gap: 5px !important;
+  }
+  
+  .navbar .form-select,
+  .navbar .form-control {
+    width: 100% !important;
+    margin-bottom: 5px;
+  }
+}
